@@ -49,3 +49,47 @@ table {
 
 
 /*///////////////////////////////////////////////////////*/
+* {
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+.hero-container {
+    height: 100%;
+    overflow-y: auto;
+    padding: 5rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+    justify-content: center;
+    gap: 2rem;
+    /* margin: 5rem; */
+    /* height: 100%; */
+}
+.book-card {
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;    
+}
+
+.book-card h3 {
+    padding: 0.5rem;
+}
+.book-card p {
+    padding: 1rem;
+}
+.book-card div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}

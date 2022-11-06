@@ -4,11 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
 
     <link rel="stylesheet" href="./style.css"> 
     <script src="./script.js" defer></script>
     <title>Library</title>
 </head>
 <body>
+    <nav></nav>
+    <form class="book-form">
+        <input name="title" type="text">
+        <input name="author" type="text">
+        <input name="pages" type="number" min="0">
+        <input name="read" type="checkbox">
+        <input name="genre" type="text">
+        <button type="submit">Submit</button>
+    </form>
+    <div class="hero-container">
+    <div class="grid-container">
+        <div class="book-card">
+            <h3>Title</h3>
+            <p>Author</p>
+            <div>
+                <p>Pages</p>
+                <p>Genre</p>
+            </div>
+            <div>
+                <input type="checkbox">
+                <button>Remove</button>
+            </div>
+        </div>
+    </div>
+    </div>
 </body>
 </html>
