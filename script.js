@@ -1,6 +1,9 @@
 let myLibrary = [];
 const bookForm = document.querySelector(".book-form");
 const gridContainer = document.querySelector(".grid-container");
+const addButton = document.querySelector(".add-btn");
+const formContainer = document.querySelector(".hide");
+const formQuitButton = document.querySelector(".form-btn")
 
 const titleInput = document.querySelector("input[name=title]");
 const authorInput = document.querySelector("input[name=author");
@@ -16,6 +19,10 @@ function Book(title,author,pages,read,genre){
     this.genre = genre;
 };
 
+Book.prototype.changeRead = function() {
+    this.read = !this.read
+    console.log(this.read);
+}
 
 function addBookToLibrary() {
     const newBook = new Book(
@@ -43,7 +50,15 @@ function removeBook(event){
     })
     createLibrary()
 }
-
+function changeReadLibrary(event) {
+    myLibrary.map((elem,i)=> {
+        if(event.target.closest(".book-card").getAttribute("number") == i){
+            myLibrary[i].changeRead()
+            console.log(myLibrary[i]);
+        }
+    })
+    createLibrary()
+}
 function createCards(book,i) {
     const bookCard = document.createElement("div");
     bookCard.classList.add("book-card");
@@ -56,7 +71,8 @@ function createCards(book,i) {
             <p>${book.genre}</p>
         </div>
         <div>
-            <input type=checkbox ${book.read ? "checked" : ""}>
+            <label for=${i}>Read</label>
+            <input id=${i} onclick=changeReadLibrary(event) type=checkbox ${book.read ? "checked" : ""}>
             <button onclick=removeBook(event)>Remove</button>
         </div>
     `
@@ -67,4 +83,14 @@ bookForm.addEventListener("submit",(e) => {
     addBookToLibrary()
     createLibrary()
     console.log(gridContainer.children);
+})
+
+addButton.addEventListener("click",() => {
+    formContainer.classList.remove("hide")
+    formContainer.classList.add("form-container")
+})
+
+formQuitButton.addEventListener("click",() => {
+    formContainer.classList.add("hide");
+    formContainer.classList.remove("form-container")
 })
