@@ -51,13 +51,18 @@ table {
 /*///////////////////////////////////////////////////////*/
 * {
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
 }
+/*---------------- Grid Container ----------------*/
 .hero-container {
     height: 100%;
     overflow-y: auto;
@@ -73,6 +78,8 @@ body {
     /* margin: 5rem; */
     /* height: 100%; */
 }
+
+/*---------------- Book Cards ----------------*/
 .book-card {
     border: 1px solid white;
     display: flex;
@@ -91,5 +98,61 @@ body {
 .book-card div {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 2rem;
+}
+/*---------------- Book Form ----------------*/
+.hide {
+    display: none;
+}
+
+.form-container {
+    border:  1px solid white;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+}
+.book-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid blue;
+    border-radius: 0.5rem;
+    background-color: rgb(85, 122, 222);
+    padding: 2rem;
+}
+.book-form div {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.form-btn {
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    padding: 0.3rem;
+}
+.book-form ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid violet; */
+}
+.book-form li {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem;
+}
+.book-form label {
+    font-size: 1.3rem;
+}
+.book-form input {
+    padding: 0.5rem;
 }
