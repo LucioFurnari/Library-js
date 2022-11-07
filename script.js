@@ -16,6 +16,7 @@ function Book(title,author,pages,read,genre){
     this.genre = genre;
 };
 
+
 function addBookToLibrary() {
     const newBook = new Book(
         titleInput.value,
@@ -26,27 +27,44 @@ function addBookToLibrary() {
         )
     myLibrary.push(newBook);
 }
-
 function createLibrary() {
+    while(gridContainer.firstChild){
+        gridContainer.removeChild(gridContainer.firstChild)
+    }
+    myLibrary.map((item,i) => {
+        createCards(item,i)
+    })
+}
+function removeBook(event){
+    myLibrary.map((elem,i)=> {
+        if(event.target.closest(".book-card").getAttribute("number") == i){
+            myLibrary.splice(i,1)
+        }
+    })
+    createLibrary()
+}
+
+function createCards(book,i) {
     const bookCard = document.createElement("div");
     bookCard.classList.add("book-card");
+    bookCard.setAttribute("number",i)
     bookCard.innerHTML = `
-    <h3>Title</h3>
-        <p>Author</p>
+    <h3>${book.title}</h3>
+    <p>${book.author}</p>
         <div>
-            <p>Pages</p>
-            <p>Genre</p>
+            <p>${book.pages}</p>
+            <p>${book.genre}</p>
         </div>
         <div>
-            <input type=checkbox>
-            <button>Remove</button>
+            <input type=checkbox ${book.read ? "checked" : ""}>
+            <button onclick=removeBook(event)>Remove</button>
         </div>
     `
     gridContainer.appendChild(bookCard);
-}
+};
 bookForm.addEventListener("submit",(e) => {
     e.preventDefault()
     addBookToLibrary()
     createLibrary()
-    console.log(myLibrary);
+    console.log(gridContainer.children);
 })
