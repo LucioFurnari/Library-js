@@ -6,23 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"> 
+
     <link rel="stylesheet" href="./style.css"> 
     <script src="./script.js" defer></script>
     <title>Library</title>
 </head>
 <body>
-    <nav></nav>
+    <nav>
+        <button class="add-btn">Add Book</button>
+    </nav>
+    <div class="hide">
     <form class="book-form">
-        <input name="title" type="text">
-        <input name="author" type="text">
-        <input name="pages" type="number" min="0">
-        <input name="read" type="checkbox">
-        <input name="genre" type="text">
-        <button type="submit">Submit</button>
+    <div>
+        <button type="button" class="form-btn">X</button>
+    </div>
+    <ul>
+        <li>
+            <label for="title">Title</label>
+            <input id="title" name="title" type="text" required>
+        </li>
+        <li>
+            <label id="author">Author</label>
+            <input id="author" name="author" type="text" required>
+        </li>
+        <li>
+            <label for="pages">Pages</label>
+            <input id="pages" name="pages" type="number" min="0" required>
+        </li> 
+        <li>
+            <label for="form-read">Read</label>
+            <input id="form-read" name="read" type="checkbox">
+        </li>
+        <li>
+            <label for="genre">Genre</label>
+            <input id="genre" name="genre" type="text" required>
+        </li>   
+    </ul>
+    <button type="submit">Submit</button>
     </form>
+    </div>
     <div class="hero-container">
     <div class="grid-container">
-        <div class="book-card">
+        <!-- <div class="book-card">
             <h3>Title</h3>
             <p>Author</p>
             <div>
@@ -33,7 +61,7 @@
                 <input type="checkbox">
                 <button>Remove</button>
             </div>
-        </div>
+        </div> -->
     </div>
     </div>
 </body>
