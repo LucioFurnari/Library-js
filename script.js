@@ -18,17 +18,18 @@ const genreInput = document.querySelector("input[name=genre]");
 
 /*------------------------------ Book Objet ------------------------------*/
 
-function Book(title,author,pages,read,genre){
+class Book{
+    constructor(title,author,pages,read,genre){
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
     this.genre = genre;
+    }
+    changeRead(){
+        this.read = !this.read
+    }
 };
-
-Book.prototype.changeRead = function() {
-    this.read = !this.read
-}
 
 /*------------------------------ Functions ------------------------------*/
 
