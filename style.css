@@ -52,6 +52,7 @@ table {
 :root {
     --bodyBackgroundColor: rgb(25,25,25);
     --textColor: rgb(240,240,240);
+    --cardBackgroundColor: #785964;
     --buttonRead: rgb(38, 169, 15);
     --buttonNotRead:rgb(190, 32, 32);
 }
@@ -99,7 +100,8 @@ nav button {
 
 /*---------------- Book Cards ----------------*/
 .book-card {
-    border: 1px solid white;
+    /* border: 1px solid white; */
+    background-color: var(--cardBackgroundColor);
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
