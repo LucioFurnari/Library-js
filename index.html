@@ -11,12 +11,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"> 
 
     <link rel="stylesheet" href="./style.css"> 
-    <script src="./script.js" defer></script>
+    <script type="module" src="./script.js" defer></script>
+    <script type="module" src="./firebase.js"></script>
     <title>Library</title>
 </head>
 <body>
     <nav>
         <button class="add-btn">Add Book</button>
+        <button class="login-btn">LogIn</button>
+        <button class="signout-btn">SignOut</button>
+        <p class="user-name"></p>
     </nav>
     <form class="book-form">
     <ul>
