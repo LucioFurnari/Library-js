@@ -1,3 +1,6 @@
+import { db } from "./firebase";
+import { collection, doc, getDoc, updateDoc, arrayUnion, onSnapshot } from "firebase/firestore";
+
 let myLibrary = [];
 const bookForm = document.querySelector(".book-form");
 const gridContainer = document.querySelector(".grid-container");
@@ -33,21 +36,32 @@ class Book{
 
 /*------------------------------ Functions ------------------------------*/
 
-function addBookToLibrary() {
-    const newBook = new Book(
-        titleInput.value,
-        authorInput.value,
-        pagesInput.value,
-        readInput.checked,
-        genreInput.value
-        )
-    myLibrary.push(newBook);
+export async function addBookToLibrary() {
+    const book = {
+        title: titleInput.value,
+        author: authorInput.value,
+        pages: pagesInput.value,
+        read: readInput.checked,
+        genre: genreInput.value
+    }
+    const getBook = doc(db, 'library', 'Es1zFeDCAMTQzr4RkCNo2M5CGEE2')
+    await updateDoc(getBook, {
+        books: arrayUnion(book)
+    })
+    // const newBook = new Book(
+    //     titleInput.value,
+    //     authorInput.value,
+    //     pagesInput.value,
+    //     readInput.checked,
+    //     genreInput.value
+    //     )
+    // myLibrary.push(newBook);
 }
-function createLibrary() {
+export function createLibrary(library) {
     while(gridContainer.firstChild){
         gridContainer.removeChild(gridContainer.firstChild)
     }
-    myLibrary.map((item,i) => {
+    library.map((item,i) => {
         createCards(item,i)
     })
 }
@@ -68,35 +82,55 @@ function changeReadBook(event) {
     })
     createLibrary()
 }
-function createCards(book,i) {
+export function createCards(book,i) {
+    const {title, author, pages, genre} = book
     const bookCard = document.createElement("div");
+    const bookTitle = document.createElement('h3')
+    bookTitle.textContent = title;
+    const bookAuthor = document.createElement('p1')
+    bookAuthor.textContent = author;
+    const pagesSection = document.createElement('div')
+    const pagesP = document.createElement('p')
+    pagesP.textContent = pages;
+    const genreP = document.createElement('p')
+    genreP.textContent = genre;
+    pagesSection.append(pagesP, genreP)
+    const buttonSection = document.createElement('div')
+    const btnRead = document.createElement('button')
+    const btnRemove = document.createElement('button')
+    btnRemove.textContent = 'Remove';
+    buttonSection.append(btnRead, btnRemove)
+
+    btnRead.id = i;
+    btnRead.classList.add(book.read ? 'read' : 'not-read')
+    btnRead.textContent = book.read ? 'Read' : 'Not Read';
+    bookCard.append(bookTitle, bookAuthor, pagesSection, buttonSection)
     bookCard.classList.add("book-card");
     bookCard.setAttribute("number",i)
-    bookCard.innerHTML = `
-    <h3>${book.title}</h3>
-    <p>${book.author}</p>
-        <div>
-            <p>Pages: ${book.pages}</p>
-            <p>${book.genre}</p>
-        </div>
-        <div>
-            <button id=${i} onclick=changeReadBook(event) class=${book.read ? "read" : "not-read"}>
-                ${book.read ? "Read" : "Not Read"}
-            </button>
-            <button onclick=removeBook(event)>Remove</button>
-        </div>
-    `
+    // bookCard.innerHTML = `
+    // <h3>${book.title}</h3>
+    // <p>${book.author}</p>
+    //     <div>
+    //         <p>Pages: ${book.pages}</p>
+    //         <p>${book.genre}</p>
+    //     </div>
+    //     <div>
+    //         <button id=${i} onclick = changeReadBook class=${book.read ? "read" : "not-read"}>
+    //             ${book.read ? "Read" : "Not Read"}
+    //         </button>
+    //         <button onclick =removeBook>Remove</button>
+    //     </div>
+    // `
     gridContainer.appendChild(bookCard);
 };
 
 /*------------------------------ Events ------------------------------*/
 
-bookForm.addEventListener("submit",(e) => {
-    e.preventDefault()
-    addBookToLibrary()
-    createLibrary()
-    console.log(gridContainer.children);
-})
+// bookForm.addEventListener("submit",(e) => {
+//     e.preventDefault()
+//     addBookToLibrary()
+//     console.log(gridContainer.children);
+// })
 
 addButton.addEventListener("click",() => {
     overlay.classList.add("active");
