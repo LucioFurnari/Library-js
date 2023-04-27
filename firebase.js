@@ -35,15 +35,15 @@ const data = {
     genre: 'Testing'   
   }]
 }
-async function setLibrary(id) {
-  await setDoc(doc(db, "library", id), data)
-  .then(() => {
-  console.log("Document has been added successfully");
-  })
-  .catch(error => {
-  console.log(error);
-  })
-}
+// async function setLibrary(id) {
+//   await setDoc(doc(db, "library", id), data)
+//   .then(() => {
+//   console.log("Document has been added successfully");
+//   })
+//   .catch(error => {
+//   console.log(error);
+//   })
+// }
 /*------------------------------ Get Data from firebase ------------------------------*/
 async function getData(id) {
   const docRef = doc(db, 'library', id)
@@ -52,6 +52,13 @@ async function getData(id) {
     console.log("Document data:", docSnap.data());
     createLibrary(docSnap.data().books)
   } else {
+    await setDoc(doc(db, "library", id), data)
+    .then(() => {
+    console.log("Document has been added successfully");
+    })
+    .catch(error => {
+    console.log(error);
+    })
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
 }
@@ -70,7 +77,6 @@ loginButton.addEventListener('click',() => signInWithPopup(auth, provider)
   // The signed-in user info.
   const user = result.user;
   const userName = document.querySelector('.user-name')
-  setLibrary(user.uid)
   getData(user.uid)
   userName.textContent = user.displayName
   console.log(user)
@@ -92,12 +98,15 @@ const signOutButton = document.querySelector('.signout-btn');
 signOutButton.addEventListener('click',() => signOut(auth).then(() => {
   const userName = document.querySelector('.user-name')
   userName.textContent = ''
+  const gridContainer = document.querySelector(".grid-container");
+  while(gridContainer.firstChild){
+    gridContainer.removeChild(gridContainer.firstChild)
+  }
 }).catch((error) => {
   // An error happened.
 })
 )
 /*------------------------------ Input Elements ------------------------------*/
-const bookForm = document.querySelector(".book-form");
 
 const titleInput = document.querySelector("input[name=title]");
 const authorInput = document.querySelector("input[name=author");
@@ -117,28 +126,23 @@ async function addBookToLibrary(id) {
   await updateDoc(getBook, {
       books: arrayUnion(book)
   })
-  // const newBook = new Book(
-  //     titleInput.value,
-  //     authorInput.value,
-  //     pagesInput.value,
-  //     readInput.checked,
-  //     genreInput.value
-  //     )
-  // myLibrary.push(newBook);
 }
-
+let listener;
 onAuthStateChanged(auth, (user) =>{
   if(user) {
     getData(user.uid)
     const userName = document.querySelector('.user-name')
     userName.textContent = user.displayName
-    bookForm.addEventListener("submit",(e) => {
+    const bookForm = document.querySelector(".book-form");
+    bookForm.removeEventListener('submit', listener)
+    listener = (e) => {
       e.preventDefault()
       addBookToLibrary(user.uid)
-    })
+    }
+    bookForm.addEventListener("submit",listener)
     onSnapshot(doc(db, 'library', user.uid), (doc) => {
       createLibrary(doc.data().books)
       console.log("Current data: ", doc.data());
-  });
+    });
   }
 })
