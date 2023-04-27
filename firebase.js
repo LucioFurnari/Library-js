@@ -1,9 +1,10 @@
 // Import the functions you need from the SDKs you need
-
+import { createCards } from "./script";
+import { createLibrary } from "./script";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-
+import { getFirestore, collection, addDoc, doc, setDoc, getDoc, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
+import { createUserCollection } from "./firebase-functions";
 // TODO: Add SDKs for Firebase products that you want to use
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,6 +26,38 @@ const provider = new GoogleAuthProvider();
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app)
 
+const data = {
+  books: [{
+    title: 'Test Book',
+    author: 'Me',
+    pages: 150,
+    read: false,
+    genre: 'Testing'   
+  }]
+}
+async function setLibrary(id) {
+  await setDoc(doc(db, "library", id), data)
+  .then(() => {
+  console.log("Document has been added successfully");
+  })
+  .catch(error => {
+  console.log(error);
+  })
+}
+/*------------------------------ Get Data from firebase ------------------------------*/
+async function getData(id) {
+  const docRef = doc(db, 'library', id)
+  const docSnap = await getDoc(docRef)
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+    createLibrary(docSnap.data().books)
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+}
+}
+/*-----------------------------------------------------------------------*/
+
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
 
@@ -37,6 +70,8 @@ loginButton.addEventListener('click',() => signInWithPopup(auth, provider)
   // The signed-in user info.
   const user = result.user;
   const userName = document.querySelector('.user-name')
+  setLibrary(user.uid)
+  getData(user.uid)
   userName.textContent = user.displayName
   console.log(user)
   // IdP data available using getAdditionalUserInfo(result)
@@ -61,10 +96,49 @@ signOutButton.addEventListener('click',() => signOut(auth).then(() => {
   // An error happened.
 })
 )
+/*------------------------------ Input Elements ------------------------------*/
+const bookForm = document.querySelector(".book-form");
+
+const titleInput = document.querySelector("input[name=title]");
+const authorInput = document.querySelector("input[name=author");
+const pagesInput = document.querySelector("input[name=pages]");
+const readInput = document.querySelector("input[name=read]");
+const genreInput = document.querySelector("input[name=genre]");
+
+async function addBookToLibrary(id) {
+  const book = {
+      title: titleInput.value,
+      author: authorInput.value,
+      pages: pagesInput.value,
+      read: readInput.checked,
+      genre: genreInput.value
+  }
+  const getBook = doc(db, 'library', id)
+  await updateDoc(getBook, {
+      books: arrayUnion(book)
+  })
+  // const newBook = new Book(
+  //     titleInput.value,
+  //     authorInput.value,
+  //     pagesInput.value,
+  //     readInput.checked,
+  //     genreInput.value
+  //     )
+  // myLibrary.push(newBook);
+}
 
 onAuthStateChanged(auth, (user) =>{
   if(user) {
+    getData(user.uid)
     const userName = document.querySelector('.user-name')
     userName.textContent = user.displayName
+    bookForm.addEventListener("submit",(e) => {
+      e.preventDefault()
+      addBookToLibrary(user.uid)
+    })
+    onSnapshot(doc(db, 'library', user.uid), (doc) => {
+      createLibrary(doc.data().books)
+      console.log("Current data: ", doc.data());
+  });
   }
 })
