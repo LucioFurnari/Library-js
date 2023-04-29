@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.overlay {
+  /* border:  1px solid white; */
+  height: 100%;
+  width: 100%;
+  top: 0;
+  display: none;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+}
+.active {
+  display: block;
+}
+.book-form {
+  display: none;
+  /* border: 1px solid blue; */
+  border-radius: 0.5rem;
+  background-color: rgb(85, 122, 222);
+  padding: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.show {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.book-form div {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.book-form button {
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  margin-top: 0.5rem;
+  padding: 0.5rem 2rem;
+}
+.book-form ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid violet; */
+}
+.book-form li {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+}
+.book-form label {
+  font-size: 1.3rem;
+  padding-bottom: 0.5rem;
+}
+.book-form input {
+  padding: 0.5rem;
+}
